@@ -40,7 +40,3 @@ def part2(mode):
         else: break
             
     return binary_decimal(data_processed[0])
-
-# PRINTS
-print(part1())
-print(part2(0) * part2(1))

@@ -1,3 +1,6 @@
+### PART 1 ###
+
+
 def treat_data(txt):
     with open(txt) as file: data = file.readlines()
     rules = eval(data[0])
@@ -8,7 +11,7 @@ def treat_data(txt):
 
 def create_boards(data):
     boards, i = [], len(data) - 1
-    while i > 3:
+    while i > 3: 
         board = [x.replace('  ', ',') for x in data[i-4:i+1]]
         board = [x.replace(' ', ',') for x in board]
         for line in range(len(board)):
@@ -21,14 +24,20 @@ def create_boards(data):
 
 
 def verify_bingo(board):
-    count = 0
+    size = len(board[0]) 
     for line in board:
-        for number in board:
+        count = 0
+        for number in line:
             if number == '@': count += 1
-        if count == len(line): return true
+        if count == size: return True
 
-        
-
+    for col in range(size):
+        cont = 0
+        for i in range(size):
+            if board[i][col] == '@': cont += 1
+        if cont == size: return True
+  
+    return False
 
 def soma(board):
     board_sum = 0
@@ -42,9 +51,20 @@ def soma(board):
 def check_boards(boards, rules):
     for rule in rules:
         for board in boards:
-            for line in board:
-                line = ['@' for x in line if x == rule else x]
-            if verify_bingo(board): return [soma(board), rule]
+            for line in range(len(board)):
+                board[line] = ['@' if x == rule else x for x in board[line]]
+            if verify_bingo(board): return [soma(board), rule] 
 
-info = treat_data("input.txt")
-print(check_boards(create_boards(info[0]), info[1]))
+
+### PART 2 ###
+
+
+def check_boards_part2(boards, rules):
+    for rule in rules:
+        for board in range(len(boards)):
+            if boards[board] != "i'm done":
+                for line in range(len(boards[board])):
+                    boards[board][line] = ['@' if x == rule else x for x in boards[board][line]]
+                if verify_bingo(boards[board]): 
+                    print([soma(boards[board]), rule])
+                    boards[board] = "i'm done"

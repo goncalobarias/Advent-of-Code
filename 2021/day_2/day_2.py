@@ -22,7 +22,3 @@ def part2(data):
             aim += processed_data[movement]
     
     return horizontal * depth
-
-### PRINTS ###
-print(part1(data))
-print(part2(data))

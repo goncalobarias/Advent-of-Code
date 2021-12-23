@@ -20,7 +20,3 @@ for depth in range(len(data)):
                 data[depth + 2]] 
     except:
         break
-
-# PRINTS
-print(increase_counter(data))
-print(increase_counter(sums))

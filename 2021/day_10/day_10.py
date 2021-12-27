@@ -19,8 +19,8 @@ def syntax_error_check(data):
         char = 0
         while char + 1 <= len(data[line]) - 1:
             syntax, next_syntax = data[line][char], data[line][char + 1]
-            if (syntax in opening and next_syntax in closing):
-                if (get_index(syntax) != get_index(next_syntax)):
+            if syntax in opening and next_syntax in closing:
+                if get_index(syntax) != get_index(next_syntax):
                     errors += [next_syntax]
                     data[line] = data[line][:char] + data[line][char + 2:]
                     char -= 1
@@ -75,8 +75,8 @@ def incompleteness_check(data):
         char, error = 0, '' 
         while char + 1 <= len(data[line]) - 1:
             syntax, next_syntax = data[line][char], data[line][char + 1]
-            if (syntax in opening and next_syntax in closing):
-                if (get_index(syntax) != get_index(next_syntax)):
+            if syntax in opening and next_syntax in closing:
+                if get_index(syntax) != get_index(next_syntax):
                     error = next_syntax 
                     data[line] = data[line][:char] + data[line][char + 2:]
                     char -= 1

@@ -1,23 +1,27 @@
 opening, closing = ['[', '<', '(', '{'], [']', '>', ')', '}']
 def treat_data(txt):
     with open(txt) as file: data = file.readlines()
-    data = list(map(lambda x: list(x[:len(x) - 1]), data))
+    data = list(map(lambda line: list(line[:len(line) - 1]), data))
 
     return data
 
 
+def get_index(char):
+    if char in opening: return opening.index(char)
+    else: return closing.index(char)
+
+
 ### PART 1 ###
 def syntax_error_check(data):
-    char, errors = 0, []
+    errors, LINES = [], len(data)
 
-    for line in range(len(data)):
+    for line in range(LINES):
         char = 0
-        while char + 1 < len(data[line]) - 1:
-            if (data[line][char] in opening 
-                and data[line][char + 1] in closing):
-                if (opening.index(data[line][char]) 
-                    != closing.index(data[line][char + 1])):
-                    errors += [data[line][char + 1]]
+        while char + 1 <= len(data[line]) - 1:
+            syntax, next_syntax = data[line][char], data[line][char + 1]
+            if (syntax in opening and next_syntax in closing):
+                if (get_index(syntax) != get_index(next_syntax)):
+                    errors += [next_syntax]
                     data[line] = data[line][:char] + data[line][char + 2:]
                     char -= 1
                     break
@@ -30,19 +34,60 @@ def syntax_error_check(data):
 
 
 def point_checker(errors):
-    score = 0
+    points = 0
     for error in errors:
-        if error == ')': score += 3
-        elif error == ']': score += 57
-        elif error == '}': score += 1197
-        else: score += 25137
+        if error == ')': points += 3
+        elif error == ']': points += 57
+        elif error == '}': points += 1197
+        else: points += 25137
 
-    return score
+    return points
 
 
 ### PART 2 ###
+def complete_lines(line): 
+    pattern = ''
+    for char in range(len(line) - 1, -1, -1):
+        pattern += closing[get_index(line[char])]
+
+    return pattern
 
 
+def get_points(patterns):
+    points = []
+    for pattern in patterns:
+        point = 0
+        for closer in pattern:
+            point *= 5
+            if closer == ')': point += 1
+            elif closer == ']': point += 2
+            elif closer == '}': point += 3
+            else: point += 4
+        points += [point]
 
-data = treat_data("input.txt")
-print(point_checker(syntax_error_check(data)))
+    return points
+
+
+def incompleteness_check(data):
+    patterns, points, LINES = [], [], len(data)
+
+    for line in range(LINES):
+        char, error = 0, '' 
+        while char + 1 <= len(data[line]) - 1:
+            syntax, next_syntax = data[line][char], data[line][char + 1]
+            if (syntax in opening and next_syntax in closing):
+                if (get_index(syntax) != get_index(next_syntax)):
+                    error = next_syntax 
+                    data[line] = data[line][:char] + data[line][char + 2:]
+                    char -= 1
+                    break
+                else:
+                    data[line] = data[line][:char] + data[line][char + 2:]
+                    char -= 1
+            else: char += 1 
+        if error == '': patterns += [complete_lines(data[line])]
+    
+    points = get_points(patterns)
+    points.sort()
+
+    return points[len(points) // 2]

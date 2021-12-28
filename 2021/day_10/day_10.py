@@ -23,7 +23,6 @@ def syntax_error_check(data):
                 if get_index(syntax) != get_index(next_syntax):
                     errors += [next_syntax]
                     data[line] = data[line][:char] + data[line][char + 2:]
-                    char -= 1
                     break
                 else:
                     data[line] = data[line][:char] + data[line][char + 2:]
@@ -79,7 +78,6 @@ def incompleteness_check(data):
                 if get_index(syntax) != get_index(next_syntax):
                     error = next_syntax 
                     data[line] = data[line][:char] + data[line][char + 2:]
-                    char -= 1
                     break
                 else:
                     data[line] = data[line][:char] + data[line][char + 2:]

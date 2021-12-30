@@ -44,7 +44,7 @@ def point_checker(errors):
 
 
 ### PART 2 ###
-def complete_lines(line): 
+def complete_lines(line):
     pattern = ''
     for char in range(len(line) - 1, -1, -1):
         pattern += closing[get_index(line[char])]
@@ -67,24 +67,24 @@ def get_points(patterns):
     return points
 
 
-def incompleteness_check(data):
+def check_incompletenessk(data):
     patterns, points, LINES = [], [], len(data)
 
     for line in range(LINES):
-        char, error = 0, '' 
+        char, error = 0, ''
         while char + 1 <= len(data[line]) - 1:
             syntax, next_syntax = data[line][char], data[line][char + 1]
             if syntax in opening and next_syntax in closing:
                 if get_index(syntax) != get_index(next_syntax):
-                    error = next_syntax 
+                    error = next_syntax
                     data[line] = data[line][:char] + data[line][char + 2:]
                     break
                 else:
                     data[line] = data[line][:char] + data[line][char + 2:]
                     char -= 1
-            else: char += 1 
+            else: char += 1
         if error == '': patterns += [complete_lines(data[line])]
-    
+
     points = get_points(patterns)
     points.sort()
 

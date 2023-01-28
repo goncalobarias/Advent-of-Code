@@ -1,6 +1,7 @@
 def treat_data(txt):
-    with open(txt) as file: data = list(eval(file.readline()))
-    
+    with open(txt) as file:
+        data = list(eval(file.readline()))
+
     return data
 
 
@@ -13,7 +14,7 @@ def count_fish(data):
 
 
 def lanternfish_creator(fishes):
-    for day in range(1, 257):
+    for _ in range(1, 257):
         fishes_resetting = fishes[0]
         for type in range(8):
             fishes[type] = fishes[type + 1]

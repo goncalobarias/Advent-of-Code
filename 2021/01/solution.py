@@ -1,22 +1,26 @@
-with open("input.txt") as file:
-    data = list(map(int, file.readlines()))
+data = [int(line.strip()) for line in open("input.txt", "r")]
 
 
-def increase_counter(data):
+def part1():
     increased = 0
-    for depth in range(len(data)):
-        try:
-            if data[depth] > data[depth - 1]:
-                increased += 1
-        except Exception:
-            pass
+    for i in range(1, len(data)):
+        if data[i] > data[i - 1]:
+            increased += 1
 
     return increased
 
 
-sums = []
-for depth in range(len(data)):
-    try:
-        sums += [data[depth] + data[depth + 1] + data[depth + 2]]
-    except Exception:
-        break
+def part2():
+    increased = 0
+    for i in range(len(data) - 3):
+        if data[i + 3] > data[i]:
+            increased += 1
+
+    return increased
+
+
+# PART 1
+print("Answer to part 1 is", part1())
+
+# PART 2
+print("Answer to part 2 is", part2())

@@ -1,30 +1,35 @@
-with open("input.txt") as file:
-    data = file.readlines()
-processed_data = list(map(lambda x: int(x[-3:]), data))
+data = [line.strip().split(" ") for line in open("input.txt", "r")]
 
 
-def part1(data):
+def part1():
     horizontal, depth = 0, 0
-    for movement in range(len(data)):
-        if "forward" in data[movement]:
-            horizontal += processed_data[movement]
-        elif "up" in data[movement]:
-            depth -= processed_data[movement]
+    for i in range(len(data)):
+        if "forward" == data[i][0]:
+            horizontal += int(data[i][1])
+        elif "up" == data[i][0]:
+            depth -= int(data[i][1])
         else:
-            depth += processed_data[movement]
+            depth += int(data[i][1])
 
     return horizontal * depth
 
 
-def part2(data):
+def part2():
     horizontal, depth, aim = 0, 0, 0
-    for movement in range(len(data)):
-        if "forward" in data[movement]:
-            horizontal += processed_data[movement]
-            depth += aim * processed_data[movement]
-        elif "up" in data[movement]:
-            aim -= processed_data[movement]
+    for i in range(len(data)):
+        if "forward" == data[i][0]:
+            horizontal += int(data[i][1])
+            depth += aim * int(data[i][1])
+        elif "up" == data[i][0]:
+            aim -= int(data[i][1])
         else:
-            aim += processed_data[movement]
+            aim += int(data[i][1])
 
     return horizontal * depth
+
+
+# PART 1
+print("Answer to part 1 is", part1())
+
+# PART 2
+print("Answer to part 2 is", part2())

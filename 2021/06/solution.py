@@ -1,24 +1,24 @@
-def treat_data(txt):
-    with open(txt) as file:
-        data = list(eval(file.readline()))
-
-    return data
+with open("input.txt", "r") as file:
+    data = list(eval(file.readline()))
 
 
-def count_fish(data):
+def fish_counter(days):
     fishes = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     for fish in data:
         fishes[fish] += 1
-
-    return fishes
-
-
-def lanternfish_creator(fishes):
-    for _ in range(1, 257):
-        fishes_resetting = fishes[0]
-        for type in range(8):
-            fishes[type] = fishes[type + 1]
-        fishes[8] = fishes_resetting
-        fishes[6] += fishes_resetting
+    carry = 0
+    for _ in range(days):
+        carry = fishes[0]
+        for fish in range(1, len(fishes)):
+            fishes[fish - 1] = fishes[fish]
+        fishes[6] += carry
+        fishes[8] = carry
 
     return sum(fishes)
+
+
+# PART 1
+print("Answer to part 1 is", fish_counter(80))
+
+# PART 2
+print("Answer to part 2 is", fish_counter(256))

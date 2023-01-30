@@ -1,75 +1,63 @@
-def treat_data(txt):
-    with open(txt) as file:
-        data = file.readlines()
-    rules = eval(data[0])
-    del data[0:2]
-
-    return [data, rules]
-
-
-def create_boards(data):
-    boards, i = [], len(data) - 1
-    while i > 3:
-        board = [x.replace("  ", ",") for x in data[i - 4 : i + 1]]
-        board = [x.replace(" ", ",") for x in board]
-        for line in range(len(board)):
-            if board[line][0] == ",":
-                board[line] = board[line][1:]
-        board = list(map(eval, board))
-        boards += [board]
-        i -= 6
-
-    return boards
+data = [line.strip() for line in open("input.txt", "r")]
+rules = list(map(int, data[0].split(",")))
+boards = [
+    [
+        list(map(int, x.replace("  ", ",").replace(" ", ",").split(",")))
+        for x in data[i - 4 : i + 1]
+    ]
+    for i in range(6, len(data), 6)
+]
 
 
 def verify_bingo(board):
-    size = len(board[0])
     for line in board:
-        count = 0
-        for number in line:
-            if number == "@":
-                count += 1
-        if count == size:
+        if line.count(None) == 5:
             return True
-
-    for col in range(size):
-        cont = 0
-        for i in range(size):
-            if board[i][col] == "@":
-                cont += 1
-        if cont == size:
+    for col in range(5):
+        for line in range(5):
+            if board[line][col] is not None:
+                break
+        if line == 4 and board[line][col] is None:
             return True
-
     return False
 
 
-def soma(board):
-    board_sum = 0
-    for line in board:
-        for number in line:
-            if isinstance(number, int):
-                board_sum += number
-
-    return board_sum
-
-
-def check_boards(boards, rules):
+def part1():
     for rule in rules:
-        for board in boards:
-            for line in range(len(board)):
-                board[line] = ["@" if x == rule else x for x in board[line]]
-            if verify_bingo(board):
-                return [soma(board), rule]
+        for i in range(len(boards)):
+            boards[i] = [
+                [None if x == rule else x for x in line] for line in boards[i]
+            ]
+            if verify_bingo(boards[i]):
+                board = [
+                    element
+                    for line in boards[i]
+                    for element in line
+                    if element is not None
+                ]
+                return sum(board) * rule
 
 
-def check_boards_part2(boards, rules):
+def part2():
     for rule in rules:
-        for board in range(len(boards)):
-            if boards[board] != "i'm done":
-                for line in range(len(boards[board])):
-                    boards[board][line] = [
-                        "@" if x == rule else x for x in boards[board][line]
+        for i in reversed(range(len(boards))):
+            boards[i] = [
+                [None if x == rule else x for x in line] for line in boards[i]
+            ]
+            if verify_bingo(boards[i]):
+                if len(boards) == 1:
+                    board = [
+                        element
+                        for line in boards[i]
+                        for element in line
+                        if element is not None
                     ]
-                if verify_bingo(boards[board]):
-                    print([soma(boards[board]), rule])
-                    boards[board] = "i'm done"
+                    return sum(board) * rule
+                del boards[i]
+
+
+# PART 1
+print("Answer to part 1 is", part1())
+
+# PART 2
+print("Answer to part 2 is", part2())

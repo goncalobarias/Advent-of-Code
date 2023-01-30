@@ -6,7 +6,6 @@ def fish_counter(days):
     fishes = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     for fish in data:
         fishes[fish] += 1
-    carry = 0
     for _ in range(days):
         carry = fishes[0]
         for fish in range(1, len(fishes)):

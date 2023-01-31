@@ -12,10 +12,10 @@ for [u, v] in data:
 
 
 def caves_path_calculator(caves_queue, part, visited=False):
-    paths = 0
     if caves_queue[-1] == "end":
         return 1
 
+    paths = 0
     for v in graph[caves_queue[-1]]:
         if v == "start":
             continue

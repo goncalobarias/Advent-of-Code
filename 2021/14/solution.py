@@ -11,19 +11,18 @@ for e in polymer:
 
 
 def polymerization(polymer, steps):
-    polimers = letters.copy()
+    polymers = letters.copy()
     duplicates = Counter()
     for i in range(len(polymer) - 1):
         duplicates[polymer[i : i + 2]] += 1
     for _ in range(steps):
-        tmp_duplicates = duplicates.copy()
+        new_duplicates = Counter()
         for e in duplicates.keys():
-            polimers[template[e][1]] += duplicates[e]
-            tmp_duplicates[template[e][0:2]] += duplicates[e]
-            tmp_duplicates[template[e][1:3]] += duplicates[e]
-            tmp_duplicates[e] -= duplicates[e]
-        duplicates = tmp_duplicates
-    return max(polimers.values()) - min(polimers.values())
+            polymers[template[e][1]] += duplicates[e]
+            new_duplicates[template[e][0:2]] += duplicates[e]
+            new_duplicates[template[e][1:3]] += duplicates[e]
+        duplicates = new_duplicates
+    return max(polymers.values()) - min(polymers.values())
 
 
 # PART 1

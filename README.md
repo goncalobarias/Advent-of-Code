@@ -6,4 +6,4 @@ The event was founded and is maintained by software engineer Eric Wastl.
 
 ## Solved Puzzles
 
-- **2021** - Solved in Python (13/25)
+- **2021** - Solved in Python (14/25)
